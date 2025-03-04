@@ -1,0 +1,20 @@
+@import "../../styles/mixins.less";
+
+.data-table {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px;
+
+    &__title {
+        padding: 12px 0;
+
+        .font-bold(24px);
+    }
+
+    &__filters {
+        display: flex;
+        flex-direction: row;
+        padding: 12px;
+        gap: 16px;
+    }
+}

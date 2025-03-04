@@ -1,1 +1,76 @@
-<p>data-table works!</p>
+<div class="data-table">
+    <div class="data-table__title"> 
+        Data Table 
+    </div>
+
+    <div class="data-table__filters">
+        <div class="data-table__filters-filter">
+          <div>Фильтр отчетного периода: </div>
+          <p-datepicker [(ngModel)]="dateRange" 
+                        selectionMode="range"
+                        placeholder="Выберите период" 
+                        (onClose)="_applyFilters()"/>
+        </div>
+      
+        <div class="data-table__filters-filter">
+          <div>Фильтр точки продажи: </div>
+          <input type="text"
+                 placeholder="Введите точку продажи" 
+                 pInputText 
+                 [(ngModel)]="salesPoint"
+                 (ngModelChange)="_onSalesPointChange($event)" />
+        </div>
+      
+          <!-- <div>
+            <h3>Фильтр агента</h3>
+            <p-dropdown 
+              [options]="agents" 
+              [(ngModel)]="selectedAgent" 
+              optionLabel="name" 
+              placeholder="Выберите агента"
+            ></p-dropdown>
+          </div>
+      
+          <div>
+            <h3>Фильтр источника данных</h3>
+            <p-dropdown 
+              [options]="dataSources" 
+              [(ngModel)]="selectedDataSource" 
+              placeholder="Выберите источник данных"
+            ></p-dropdown>
+          </div> -->
+    </div>
+
+    <div class="data-table__table">
+        <p-table [value]="(_filteredReports$ | async) || []"
+                 [paginator]="true"
+                 [rows]="5"
+                 [tableStyle]="{ 'min-width': '50rem' }"
+                 [rowsPerPageOptions]="[5, 10, 20]">
+            <ng-template #header>
+                <tr>
+                    <th style="width:18%">Дата отчета </th>
+                    <th style="width:17%">ID отчета </th>
+                    <th style="width:10%">Валюта </th>
+                    <th style="width:15%">Агент </th>
+                    <th style="width:15%">Точка продажи</th>
+                    <th style="width:15%">Источник данных </th>
+                    <th style="width:10%">Сторно</th>
+                </tr>
+            </ng-template>
+        <ng-template #body let-items>
+                <tr>
+                    <td>{{ items.dateAccIn | date }}</td>
+                    <td>{{ items.id }}</td>
+                    <td>{{ items.currency.code }}</td>
+                    <td>{{ items.agent.code }}</td>
+                    <td>{{ items.pointOfSale.code }}</td>
+                    <td>{{ items.dts.code }}</td>
+                    <td>{{ items.strono ? "Да" : "Нет"}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+
