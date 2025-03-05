@@ -1,15 +1,5 @@
 <div class="header">
     <div class="header__title">Test Application</div>
-    <a class="header__menu-item"
-       routerLink="/report"
-       routerLinkActive="activebutton"
-       ariaCurrentWhenActive="page">
-        Reports
-    </a>
-    <a class="header__menu-item"
-       routerLink="/data-table"
-       routerLinkActive="activebutton"
-       ariaCurrentWhenActive="page">
-        Data Table
-    </a>
+    <p-button class="header__menu-item" label="Экран отчета" icon="pi pi-chart-bar" routerLink="/report"/>
+    <p-button class="header__menu-item" label="Таблица данных" icon="pi pi-table" routerLink="/data-table" />
 </div>

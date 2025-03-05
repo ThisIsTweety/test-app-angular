@@ -1,18 +1,28 @@
-export type Agent = Readonly<{
+export type EntityType = Readonly<{
     code: string;
     name: string;
+}>;
+
+export type TableConfig = Readonly<{
+    column: string;
+    field: string;
+    isEditable: boolean;
+}>;
+
+export type Agent = Readonly<{
+    agents: EntityType[];
 }>;
 
 export type Item = Readonly<{
     type: string;
     id: number;
-    currency: Agent;
+    currency: EntityType;
     dateAccIn: string;
     pkind: number;
-    agent: Agent;
-    pointOfSale: Agent;
+    agent: EntityType;
+    pointOfSale: EntityType;
     attrClose: number;
-    dts: Agent;
+    dts: EntityType;
     userId: number;
     datInp: string;
     storno: number;

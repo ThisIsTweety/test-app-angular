@@ -1,71 +1,88 @@
 <div class="data-table">
     <div class="data-table__title"> 
-        Data Table 
+        Таблица Данных 
     </div>
 
     <div class="data-table__filters">
         <div class="data-table__filters-filter">
-          <div>Фильтр отчетного периода: </div>
-          <p-datepicker [(ngModel)]="dateRange" 
+          <div class="data-table__filters-filter-title">Фильтр отчетного периода: </div>
+          <p-datepicker class="data-table__filters-filter-input"
                         selectionMode="range"
                         placeholder="Выберите период" 
-                        (onClose)="_applyFilters()"/>
+                        [(ngModel)]="_dateRange" 
+                        (onClose)="_applyFilters()" />
         </div>
       
         <div class="data-table__filters-filter">
-          <div>Фильтр точки продажи: </div>
-          <input type="text"
+          <div class="data-table__filters-filter-title">Фильтр точки продажи: </div>
+          <input class="data-table__filters-filter-input"
+                 type="text"
                  placeholder="Введите точку продажи" 
                  pInputText 
-                 [(ngModel)]="salesPoint"
+                 [(ngModel)]="_salesPoint"
                  (ngModelChange)="_onSalesPointChange($event)" />
         </div>
       
-          <!-- <div>
-            <h3>Фильтр агента</h3>
-            <p-dropdown 
-              [options]="agents" 
-              [(ngModel)]="selectedAgent" 
-              optionLabel="name" 
-              placeholder="Выберите агента"
-            ></p-dropdown>
-          </div>
+        <div class="data-table__filters-filter">
+          <div class="data-table__filters-filter-title">Фильтр агента: </div>
+          <p-select class="data-table__filters-filter-select"
+                    optionLabel="name" 
+                    placeholder="Выберите агента" 
+                    [options]="_agents"
+                    [showClear]="true" 
+                    [(ngModel)]="_selectedAgent"
+                    (onChange)="_applyFilters()" />
+        </div>
       
-          <div>
-            <h3>Фильтр источника данных</h3>
-            <p-dropdown 
-              [options]="dataSources" 
-              [(ngModel)]="selectedDataSource" 
-              placeholder="Выберите источник данных"
-            ></p-dropdown>
-          </div> -->
+        <div class="data-table__filters-filter">
+          <div class="data-table__filters-filter-title">Фильтр источника данных: </div>
+          <p-select class="data-table__filters-filter-select"
+                    optionLabel="name" 
+                    placeholder="Выберите агента" 
+                    [options]="_dts"
+                    [showClear]="true" 
+                    [(ngModel)]="_selectedDts"
+                    (onChange)="_applyFilters()" />
+        </div>
     </div>
 
     <div class="data-table__table">
-        <p-table [value]="(_filteredReports$ | async) || []"
+        <p-table [showGridlines]="true"
+                 [value]="(_filteredReports$ | async) || []"
+                 [reorderableColumns]="true"
                  [paginator]="true"
                  [rows]="5"
+                 [resizableColumns]="true"
                  [tableStyle]="{ 'min-width': '50rem' }"
                  [rowsPerPageOptions]="[5, 10, 20]">
             <ng-template #header>
                 <tr>
-                    <th style="width:18%">Дата отчета </th>
-                    <th style="width:17%">ID отчета </th>
-                    <th style="width:10%">Валюта </th>
-                    <th style="width:15%">Агент </th>
-                    <th style="width:15%">Точка продажи</th>
-                    <th style="width:15%">Источник данных </th>
-                    <th style="width:10%">Сторно</th>
+                    @for (value of _tableConfig; track value) {
+                      <th pResizableColumn pReorderableColumn>
+                        @if (value.isEditable) {
+                          <input #inputRef
+                                 class="data-table__filters-filter-input"
+                                 pInputText
+                                 [(ngModel)]="value.column"
+                                 (blur)="_editColumn(value)"
+                                 (keyup.enter)="_editColumn(value)"
+                          />
+                        } @else {
+                          <span (dblclick)="_editColumn(value)">
+                            {{ value.column }}
+                          </span>
+                        }
+                    }
                 </tr>
             </ng-template>
         <ng-template #body let-items>
                 <tr>
                     <td>{{ items.dateAccIn | date }}</td>
                     <td>{{ items.id }}</td>
-                    <td>{{ items.currency.code }}</td>
-                    <td>{{ items.agent.code }}</td>
-                    <td>{{ items.pointOfSale.code }}</td>
-                    <td>{{ items.dts.code }}</td>
+                    <td>{{ items.currency.name }}</td>
+                    <td>{{ items.agent.name }}</td>
+                    <td>{{ items.pointOfSale.name }}</td>
+                    <td>{{ items.dts.name }}</td>
                     <td>{{ items.strono ? "Да" : "Нет"}}</td>
                 </tr>
             </ng-template>
