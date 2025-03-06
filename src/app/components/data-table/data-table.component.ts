@@ -111,6 +111,18 @@ export class DataTableComponent implements OnInit {
     this.salesPointSubject$.next(value);
   }
 
+  public _getFieldValue(obj: Item, path: string): any {
+    if (!obj || !path) {
+      return null;
+    }
+
+    const pathParts = path.split('.');
+
+    return pathParts.reduce((currentObj: any, key) => {
+      return currentObj && currentObj[key] ? currentObj[key] : null;
+    }, obj);
+  }
+
   public _editColumn(config: TableConfig) {
     const index = this._tableConfig.findIndex(col => col === config);
     if(index !== -1) {
